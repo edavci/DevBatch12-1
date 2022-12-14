@@ -1,3 +1,15 @@
+DmlDemo.dmlInsertDemo_5();
 DmlDemo.dmlInsertDemo_stndObj();
 DmlDemo.dmlInsertDemo_cstmObj();
 DmlDemo.dmlUpdateDemo_1();
+DmlDemo.dmlUpdateDemo_3();
+DmlDemo.dmlInsertDemo_4();
+//DmlDemo.dmlInsertMultiple_wrong();
+DmlDemo.dmlInsertMultiple_right();
+Dmldemo.dmlInsertMultiple_right2();
+DmlDemo.dmlUpdateMultiple_right1();
+
+
+
+list<account> listAccount = [select id from account where createddate = THIS_WEEK];
+delete listAccount;
