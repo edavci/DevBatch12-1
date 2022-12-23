@@ -45,7 +45,7 @@ public class AccountTriggerHandler {
                 account newAcc = accTriggerNewMap.get(eachContact.AccountId);
                 boolean accVIP = newAcc.vip__c;
 
-                eachContact.vip__c = accVIP;
+                eachContact.vip__c = accTriggerNewMap.get(eachContact.AccountId).vip__c;
             }
             update allContacts;
         }
@@ -53,6 +53,8 @@ public class AccountTriggerHandler {
         
         //update contacts
     }
+
+    
 }
 
 
