@@ -82,7 +82,7 @@ public class AccountTriggerHandlerTest {
         list<contact> allContacts = [select id, accountid, vip__c from contact];
             //soql
         for (contact c : allContacts) {
-            system.assertEquals(true, c.vip__c);
+           system.assertEquals(true, c.vip__c);
         }
             //assert.
     }
