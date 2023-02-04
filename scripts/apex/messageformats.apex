@@ -47,3 +47,10 @@ System.debug(jsonString);
 //Callouts test
 RestCallouts.getAnimals();
 RestCallouts.getAirlines();
+RestCallouts.getEmployees();
+RestCallouts.getCasesUsingNC();
+RestCallouts.postAnimal();
+
+//solution design
+Flow => Invocable Apex => Future Method (Callout)
+Trigger => Future Method(Callout)

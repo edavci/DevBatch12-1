@@ -1,9 +1,11 @@
- //Endpoint: https://api.instantwebtools.net/v1/airlines
+public with sharing class RestCallouts {
+
+    //Endpoint: https://th-apex-http-callout.herokuapp.com/animals
     //Http Method: GET
-    public static HttpResponse getAirlines() {
+    public static HttpResponse getAnimals() {
         //1. Prepare HttpRequest and wrap all the necessary data in it
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://api.instantwebtools.net/v1/airlines');
+        request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals');
         request.setMethod('GET');
 
         //2. Prepare internet
@@ -13,12 +15,11 @@
         HttpResponse response = http.send(request);
 
         //4. Process HttpResponse
-        if(response.getStatusCode() == 200) {
-            String jsonString = response.getBody();
-            System.debug(jsonString);
-        }
+        System.debug(response.getStatusCode());
+        System.debug(response.getBody());
         return response;
     }
+
     //Endpoint: https://api.instantwebtools.net/v1/airlines
     //Http Method: GET
     public static HttpResponse getAirlines() {
@@ -61,21 +62,97 @@
                 }
         }
         return response;
+    }
 
-        //Endpoint: https://api.onlinewebtutorblog.com/employees
-       //Http Method: GET
-       public static HttpResponse getEmployees(){
+    //Endpoint: https://api.onlinewebtutorblog.com/employees
+    //Http Method: GET
+    public static HttpResponse getEmployees() {
+        //1. Prepare HttpRequest and wrap all the necessary data in it
         HttpRequest request = new HttpRequest();
         request.setEndpoint('https://api.onlinewebtutorblog.com/employees');
         request.setMethod('GET');
 
+        //2. Prepare internet
         Http http = new Http();
+
+        //3. Send the HttpRequest over the internet in order to receive HttpResponse back
         HttpResponse response = http.send(request);
+
+        //4. Process HttpResponse
         if(response.getStatusCode() == 200) {
             String jsonString = response.getBody();
-            System.debug(jsonString);
+            //Convert the jsonString into Employee Response class
+            EmployeeResponse empRes = (EmployeeResponse)JSON.deserialize(jsonString, EmployeeResponse.class);
+            List<EmployeeResponse.EmployeeWrapper> wrappers = empRes.data;
+                //Covert each EmployeeWrapper into Employee__c sObject record
+                List<Employee__c> employees = new List<Employee__c>();
+                for(EmployeeResponse.EmployeeWrapper wrap : wrappers) {
+                    Employee__c emp = new Employee__c();
+                    emp.Name = String.valueOf(wrap.id);
+                    emp.Username__c = wrap.username;
+                    emp.Employee_Name__c = wrap.name;
+                    emp.Email__c = wrap.email;
+                    emp.Gender__c = wrap.gender;
+                    emp.Designation__c = wrap.designation;
+                    emp.Phone_Number__c = wrap.phone_number;
+                    emp.Complete_Address__c = wrap.complete_address;
+                    employees.add(emp);
+                }
+                try {
+                    insert employees;
+                } catch(Exception ex) {
+                    System.debug(ex.getMessage());
+                }
         }
-     return response:
-}
+        return response;
+    }
+
+    //endpoint: https://d4x000008xtvneaw-dev-ed.my.salesforce.com/services/apexrest/Cases/5004x00000LPiLgAAL
+    //http method: get
+    public static HttpResponse getCasesUsingNC(){
+    HttpRequest request = new HttpRequest();
+    request.setEndpoint('callout:NC_Dev_Account/services/apexrest/Cases/5004x00000LPiLgAAL');
+    request.setMethod('GET');
+    Http http = new Http();
+    HttpResponse response = http.send(request);
+    System.debug(response.getStatusCode());
+    System.debug(response.getStatus());
+    System.debug(response.getBody());
+    return response;
+
 
     }
+
+    //Endpoint: https://th-apex-http-callout.herokuapp.com/animals
+    //Http Method: POST
+    public static HttpResponse postAnimal(){
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals');
+        request.setMethod('POST');
+        String body = '{"name":"mighty moose"}';
+        request.setBody(body);
+        request.setHeader('Content-Type', 'application/json;charset=UTF-8');
+        Http http = new Http();
+        HttpResponse response = http.send(request);
+        if(response.getStatusCode() == 201){
+            system.debug('Request has been procesess successfully!');
+
+        }else{
+            system.debug('something went wrong while creating animal information: ' + response.getBody());
+
+        }
+        return response;
+
+
+
+
+    }
+
+	public static System.HttpResponse (){
+		return null;
+	} 
+
+	public static System.HttpResponse (){
+		return null;
+	} 
+}
